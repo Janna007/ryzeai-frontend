@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 14% 10%;
+    --foreground: 220 13% 91%;
+
+    --card: 220 14% 13%;
+    --card-foreground: 220 13% 91%;
+
+    --popover: 220 14% 13%;
+    --popover-foreground: 220 13% 91%;
+
+    --primary: 142 60% 55%;
+    --primary-foreground: 220 14% 10%;
+
+    --secondary: 220 14% 18%;
+    --secondary-foreground: 220 13% 80%;
+
+    --muted: 220 14% 16%;
+    --muted-foreground: 220 10% 55%;
+
+    --accent: 210 80% 60%;
+    --accent-foreground: 220 14% 10%;
+
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 14% 20%;
+    --input: 220 14% 18%;
+    --ring: 142 60% 55%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 220 14% 11%;
+    --sidebar-foreground: 220 13% 91%;
+    --sidebar-primary: 142 60% 55%;
+    --sidebar-primary-foreground: 220 14% 10%;
+    --sidebar-accent: 220 14% 18%;
+    --sidebar-accent-foreground: 220 13% 91%;
+    --sidebar-border: 220 14% 20%;
+    --sidebar-ring: 142 60% 55%;
+
+    /* Custom tokens */
+    --panel-bg: 220 14% 12%;
+    --panel-header: 220 14% 14%;
+    --panel-border: 220 14% 20%;
+    --code-bg: 220 14% 8%;
+    --code-line-highlight: 220 14% 15%;
+    --agent-plan: 210 80% 60%;
+    --agent-generate: 142 60% 55%;
+    --agent-explain: 35 90% 60%;
+    --chat-user: 220 14% 18%;
+    --chat-ai: 220 14% 14%;
+    --version-dot: 142 60% 55%;
+    --preview-bg: 0 0% 100%;
+    --preview-fg: 220 14% 10%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted));
+    border-radius: 3px;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  @keyframes slide-in-right {
+    from { transform: translateX(10px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  .animate-slide-in {
+    animation: slide-in-right 0.3s ease-out;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
+}
