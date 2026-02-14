@@ -14,15 +14,15 @@ type GeneratePayload = sendData;
 export default function Index() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [code, setCode] = useState("")
-  const [plan,setPlan]=useState<AgentPlan | null>(null)
+  const [plan, setPlan] = useState<AgentPlan | null>(null)
   const [agentStep, setAgentStep] = useState<AgentStep>("idle");
   const [isProcessing, setIsProcessing] = useState(false);
   const [versions, setVersions] = useState<Version[]>([]);
   const [currentVersionId, setCurrentVersionId] = useState("");
   const [usedComponents, setUsedComponents] = useState<string[]>([]);
 
-  
-  const generateMutation = useMutation<Result,Error,GeneratePayload>({
+
+  const generateMutation = useMutation<Result, Error, GeneratePayload>({
     mutationKey: ["generate-ui"],
     mutationFn: sendProject,
   });
@@ -44,8 +44,8 @@ export default function Index() {
       (v) => v.id === currentVersionId
     );
 
-    
-    
+
+
     try {
       const result = await generateMutation.mutateAsync({
         userInput: content,
@@ -53,9 +53,9 @@ export default function Index() {
         existingCode: currentVersion?.code ?? null,
       });
 
-      console.log("Result:" ,result)
+      console.log("Result:", result)
       // const result = await runAgent(
-        //   content,
+      //   content,
       //   code || null,
       //   (step) => setAgentStep(step as AgentStep)
       // );
@@ -71,7 +71,7 @@ export default function Index() {
         id: versionId,
         label: `v${versions.length + 1}`,
         code: newCode,
-        plan:newPlan,
+        plan: newPlan,
         timestamp: new Date(),
         prompt: content,
       };

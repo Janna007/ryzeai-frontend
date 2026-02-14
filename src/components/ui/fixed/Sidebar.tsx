@@ -15,7 +15,7 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
-    items,
+    items = [],
     activeItem,
     onItemClick,
     collapsed = false,
@@ -37,7 +37,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             className={`flex items-center px-6 py-3 transition-colors hover:bg-slate-800 ${isActive ? 'bg-slate-800 text-white border-r-4 border-blue-500' : ''
                                 }`}
                         >
-                            <Icon size={20} className={isActive ? 'text-blue-500' : 'text-slate-400'} />
+                            {Icon && <Icon size={20} className={isActive ? 'text-blue-500' : 'text-slate-400'} />}
                             {!collapsed && (
                                 <span className="ml-4 text-sm font-medium">{item.label}</span>
                             )}

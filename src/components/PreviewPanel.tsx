@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { Eye, AlertTriangle } from "lucide-react";
 import * as FixedUI from "@/components/ui/fixed";
+import * as LucideIcons from "lucide-react";
 import React from 'react';
 
 declare global {
@@ -11,6 +12,29 @@ declare global {
 
 interface PreviewPanelProps {
   code: string;
+}
+
+function ErrorDisplay({ error }: { error: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center h-full text-destructive p-8 bg-destructive/5 rounded-lg border border-destructive/20 border-dashed">
+      <AlertTriangle className="w-10 h-10 mb-3" />
+      <p className="text-sm font-mono text-center break-all">{error}</p>
+    </div>
+  );
+}
+
+class ErrorBoundary extends React.Component<{ children: React.ReactNode, fallback: (error: string) => React.ReactNode }, { hasError: boolean, error: string }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false, error: '' };
+  }
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error: error.message };
+  }
+  render() {
+    if (this.state.hasError) return this.props.fallback(this.state.error);
+    return this.props.children;
+  }
 }
 
 export function PreviewPanel({ code }: PreviewPanelProps) {
@@ -33,10 +57,13 @@ export function PreviewPanel({ code }: PreviewPanelProps) {
           return;
         }
 
-        // Preprocess code: remove imports and handle export
+        // Preprocess code: remove markdown, imports and handle export
         let processedCode = code
+          .replace(/^```[a-z]*\n/i, '') // Remove opening markdown block
+          .replace(/\n```$/m, '') // Remove closing markdown block
           .replace(/import\s+[\s\S]*?from\s+['"].*?['"];?/g, '') // Remove imports
-          .replace(/export\s+default\s+function\s+(\w+)/, 'function GeneratedComponent') // Rename export to GeneratedComponent
+          .replace(/export\s+default\s+function\s+(\w+)/, 'function GeneratedComponent') // Named function export
+          .replace(/export\s+default\s+/, 'const GeneratedComponent = ') // Arrow function or expression export
           .replace(/export\s+function\s+(\w+)/, 'function $1'); // Remove export from named exports
 
         // Transpile JSX
@@ -54,6 +81,7 @@ export function PreviewPanel({ code }: PreviewPanelProps) {
           'useCallback',
           'useRef',
           ...Object.keys(FixedUI),
+          // ...Object.keys(LucideIcons),
           `${transpiled}; return typeof GeneratedComponent !== 'undefined' ? GeneratedComponent : (typeof MyComponent !== 'undefined' ? MyComponent : null);`
         );
 
@@ -64,7 +92,8 @@ export function PreviewPanel({ code }: PreviewPanelProps) {
           React.useMemo,
           React.useCallback,
           React.useRef,
-          ...Object.values(FixedUI)
+          ...Object.values(FixedUI),
+          // ...Object.values(LucideIcons)
         );
 
         if (!DynamicComponent) {
@@ -131,7 +160,9 @@ export function PreviewPanel({ code }: PreviewPanelProps) {
           </div>
         ) : Component ? (
           <div className="p-4 min-h-full animate-in fade-in duration-300">
-            <Component />
+            <ErrorBoundary fallback={(err) => <ErrorDisplay error={err} />}>
+              <Component />
+            </ErrorBoundary>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-muted-foreground">

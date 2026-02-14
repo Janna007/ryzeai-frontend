@@ -12,8 +12,8 @@ interface TableProps {
 }
 
 export const Table: React.FC<TableProps> = ({
-    columns,
-    data,
+    columns = [],
+    data = [],
     variant = 'default',
 }) => {
     const tableStyles = {

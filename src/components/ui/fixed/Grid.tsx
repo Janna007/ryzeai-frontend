@@ -47,3 +47,5 @@ export const Grid: React.FC<GridProps> = ({
         </div>
     );
 };
+
+// (Grid as any).Item = Grid;

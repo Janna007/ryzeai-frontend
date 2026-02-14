@@ -12,8 +12,8 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
-    title,
-    items,
+    title=" Navbar",
+    items = [{label:"Home"},{label:"About"},{label:"Contact"}],
     actions,
 }) => {
     return (
